@@ -4,12 +4,11 @@
 #include <ESP8266mDNS.h>
 #include <IRremoteESP8266.h>
 
-
 const char *ssid = "********";
 const char *password = "***********";
 
 ESP8266WebServer server (80);
-IRsend irsend(4);                                                                         //an IR led is connected to GPIO pin 0
+IRsend irsend(4);                            //an IR led is connected to GPIO4 
 
 void handleRoot() {
 
@@ -191,7 +190,7 @@ void setup ( void ) {
 	}
 
 	server.on ( "/", handleRoot );
-  server.on ( "/led", handleCode); 
+ 	server.on ( "/led", handleCode); 
 	server.onNotFound ( handleNotFound );
 	server.begin();
 	Serial.println ( "HTTP server started" );
@@ -199,8 +198,6 @@ void setup ( void ) {
 
 void loop ( void ) {
   server.handleClient();
-  
-  
 }
 
 
