@@ -8,9 +8,9 @@ const char *ssid = "********";
 const char *password = "***********";
 
 ESP8266WebServer server (80);
-IRsend irsend(4);                            //an IR led is connected to GPIO4 
+IRsend irsend(4);                   //an IR led is connected to GPIO4 
 
-void handleRoot() {
+void handleRoot() {		//main root webpage
 
 	String temp =
 "<!DOCTYPE html>"
@@ -134,10 +134,10 @@ void handleRoot() {
 "</body>"
 "</html>"
 ;
-	server.send ( 200, "text/html", temp );
+	server.send ( 200, "text/html", temp ); //post page on address
 }
 
-void handleNotFound() {
+void handleNotFound() {			//not found page
 	String message = "File Not Found\n\n";
 	message += "URI: ";
 	message += server.uri();
@@ -154,7 +154,7 @@ void handleNotFound() {
 	server.send ( 404, "text/plain", message );
 }
 
-void handleCode(){
+void handleCode(){		//handle GET request with code. 
   String scode = server.arg("code");
   char codez[9];
   scode.toCharArray(codez, 9);
@@ -164,7 +164,7 @@ void handleCode(){
     irsend.sendNEC(codurino, 32);
     delay(40);
   }
-  server.send( 200, "text/plain", "");
+  server.send( 200, "text/plain", ""); // empty OK response
 }
 
 void setup ( void ) {
@@ -189,9 +189,9 @@ void setup ( void ) {
 		Serial.println ( "MDNS responder started" );
 	}
 
-	server.on ( "/", handleRoot );
- 	server.on ( "/led", handleCode); 
-	server.onNotFound ( handleNotFound );
+	server.on ( "/", handleRoot );  //if root request
+ 	server.on ( "/led", handleCode);  //if GET request with code
+	server.onNotFound ( handleNotFound ); //if not found
 	server.begin();
 	Serial.println ( "HTTP server started" );
 }
